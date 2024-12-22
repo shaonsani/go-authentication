@@ -22,6 +22,18 @@ func NewAuthControllerImpl(Db *gorm.DB, validate *validator.Validate) *AuthContr
  return &AuthController{Db: Db, Validate: validate}
 }
 
+
+// Register handles user registration.
+// @Summary Register a new user
+// @Description Creates a new user account
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param   user  body  models.User  true  "User data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /auth/register [post]
+
 func (c AuthController) Register(ctx *gin.Context) {
 	var reqBody request.RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
