@@ -54,18 +54,18 @@ func (c AuthController) Register(ctx *gin.Context) {
 		return
 	}
 
-	// file, err := ctx.FormFile("photo")
-	// if err != nil {
-	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "Photo is required"})
-	// 	return
-	// }
+	file, err := ctx.FormFile("Photo")
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Photo is required"})
+		return
+	}
 
-	// // Save the photo to a directory
-	// photoPath := fmt.Sprintf("./uploads/%s", file.Filename)
-	// if err := ctx.SaveUploadedFile(file, photoPath); err != nil {
-	// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save photo"})
-	// 	return
-	// }
+	// Save the photo to a directory
+	photoPath := fmt.Sprintf("./uploads/%s", file.Filename)
+	if err := ctx.SaveUploadedFile(file, photoPath); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save photo"})
+		return
+	}
 
 	password, err := helper.EncryptPassword(reqBody.Password)
 
@@ -79,7 +79,7 @@ func (c AuthController) Register(ctx *gin.Context) {
 		Gender:   reqBody.Gender,
 		Mobile:   reqBody.Mobile,
 		Address:  reqBody.Address,
-		Photo:    "",
+		Photo:    photoPath,
 		Email:    reqBody.Email,
 		Password: password,
 	}
